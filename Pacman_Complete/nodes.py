@@ -29,6 +29,9 @@ class Node(object):
                 pygame.draw.line(screen, WHITE, line_start, line_end, 1)
                 pygame.draw.circle(screen, RED, self.position.asInt(), 4)
 
+    def __str__(self):
+        return "{}, {}".format(self.position.x, self.position.y)
+
 
 class NodeGroup(object):
     def __init__(self, level):
