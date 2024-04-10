@@ -66,6 +66,9 @@ class DebugHelper(object):
             :param color: The color of the line.
             :param width: The width of the line.
         """
+        if not DebugHelper._enabled:
+            return
+
         DebugHelper.__addDrawObject__("line",
                                       [startVector.asInt(), endVector.asInt(), color, width])
 
@@ -80,6 +83,9 @@ class DebugHelper(object):
             :param width: The width of the dashed line.
             :param dashLength: The length of the dashes in the line.
         """
+        if not DebugHelper._enabled:
+            return
+
         DebugHelper.__addDrawObject__("dashedLine",
                                       [startVector.asInt(), endVector.asInt(), color, width, dashLength])
 
@@ -91,6 +97,9 @@ class DebugHelper(object):
             :param radius: The radius of the dot.
             :param color: The color of the dot.
         """
+        if not DebugHelper._enabled:
+            return
+
         DebugHelper.__addDrawObject__("dot",
                                       [center.asInt(), color, radius])
 
@@ -104,6 +113,9 @@ class DebugHelper(object):
             :param width: The width of the dashes.
             :param dash_length: The length of the dashes.
         """
+        if not DebugHelper._enabled:
+            return
+
         DebugHelper.__addDrawObject__("dashedCircle",
                                       [center.asInt(), radius, color, width, dash_length])
 
@@ -113,6 +125,9 @@ class DebugHelper(object):
             Draws the map/graph of the current level that Pac-Man and the ghosts are moving on.
             :param obs: The current Observation object.
         """
+        if not DebugHelper._enabled:
+            return
+
         for node in obs.nodeGroup.nodesLUT.values():
             DebugHelper.drawDot(node.position, 4, DebugHelper.BLUE)
 
@@ -154,6 +169,9 @@ class DebugHelper(object):
 
     @staticmethod
     def __addDrawObject__(drawObjectType: str, drawObject: list):
+        if not DebugHelper._enabled:
+            return
+        
         DebugHelper._shapesToDraw[drawObjectType].append(drawObject)
 
     @staticmethod

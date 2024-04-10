@@ -3,12 +3,12 @@ from PacmanAgentBuilder.utils.gameStats import GameStats
 from Pacman_Complete.run import GameController
 
 
-def runGameWithAgent(agentType: type[IAgent], gameSpeed=3, startLives=3, startLevel: int = 0,
+def runGameWithAgent(agentClass: type[IAgent], gameSpeed=1, startLives=3, startLevel: int = 0,
                      ghostsEnabled: bool = True, freightEnabled: bool = True, lockDeltaTime: bool = False) -> GameStats:
     """
         Runs a single game with the specified agent.
 
-        :param agentType: Specify the agent to be evaluated.
+        :param agentClass: Specify the agent to be evaluated.
         :param gameSpeed: Sets the speed of the game from 0.1 (slow) to 5 (fast). Note: For a higher speed, enable lockDeltaTime.
         :param startLives: The number of lives the agent starts with.
         :param startLevel: Choose the starting level for the agent (0 for level one, 1 for level two, and so on).
@@ -19,7 +19,7 @@ def runGameWithAgent(agentType: type[IAgent], gameSpeed=3, startLives=3, startLe
     """
 
     if gameSpeed < 0.1 or 5 < gameSpeed:
-        raise ValueError(f"gameSpeed ({gameSpeed}) must be between 0.1 and 10 (inclusive). Otherwise the game breaks.")
+        raise ValueError(f"gameSpeed ({gameSpeed}) must be between 0.1 and 5 (inclusive). Otherwise the game breaks.")
 
     game = GameController(
         gameSpeed=gameSpeed,
@@ -29,7 +29,7 @@ def runGameWithAgent(agentType: type[IAgent], gameSpeed=3, startLives=3, startLe
         freightEnabled=freightEnabled,
         lockDeltaTime=lockDeltaTime
     )
-    agent = agentType(gameController=game)
+    agent = agentClass(gameController=game)
 
     game.startGame(agent=agent)
     while True:
@@ -38,9 +38,9 @@ def runGameWithAgent(agentType: type[IAgent], gameSpeed=3, startLives=3, startLe
             return GameStats(game, agent)
 
 
-def calculatePerformanceOverXGames(agentClass: type[IAgent], gameCount: int, gameSpeed=5,
+def calculatePerformanceOverXGames(agentClass: type[IAgent], gameCount: int = 100, gameSpeed=1,
                                    startLevel: int = 0, ghostsEnabled: bool = True, freightEnabled: bool = True,
-                                   lockDeltaTime=False, logging=False):
+                                   lockDeltaTime=True, logging=False):
     """
         Calculates the performance of the specified agent over a number of games.
 

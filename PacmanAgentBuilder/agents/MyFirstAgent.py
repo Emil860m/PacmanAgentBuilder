@@ -81,7 +81,6 @@ class MyFirstAgent(IAgent):
         # uncomment this to draw the graph of the current level to the screen:
         DebugHelper.drawMap(obs)
 
-        # sleep(0.01)
         pacmanPosition = obs.getPacmanPosition()
         pacmanTarget = obs.getPacmanTargetPosition()
         if self.vertex_unknown and not pacmanPosition == pacmanTarget:
@@ -93,36 +92,11 @@ class MyFirstAgent(IAgent):
 
         # draw a purple line from pacman to pacmans target
         DebugHelper.drawLine(pacmanPosition, pacmanTarget, DebugHelper.PURPLE, 5)
-        # if pacman is on a node, use pathfinding to find next direction
-        # if pacmanPosition == pacmanTarget:
-        #     self.find_safe_factors(obs)
-        #     print("Safe factors found")
-        #     self.pacman_node = self.get_graph_node_from_node(obs.getNodeFromVector(pacmanTarget))
-        #     self.goal = decision_maker(obs, self)
-        #     start_other = None
-        #     if self.pacman_vertex is not None:
-        #         start_other = self.pacman_vertex.get_other(self.pacman_node)
-        #     print("pacman vertex found")
-        #     dijkstra(obs, self.pacman_node, start_other, heuristic_safest, pacman_func_on_node, self)
-        #     print("dijktra done")
-        #     next_node = get_next_node(self.pacman_node, self.goal)
-        #     self.direction = next_node.direction_from_previous
-        #     print("direction found")
-        #     if len(self.not_visited_vertices) == 0:
-        #         self.not_visited_vertices = copy.deepcopy(self.graph_vertices)
-        #     if self.direction != 0:
-        #         if self.pacman_node.vertices[self.direction] in self.not_visited_vertices:
-        #             self.not_visited_vertices.remove(self.pacman_node.vertices[self.direction])
-        #         self.pacman_vertex = self.pacman_node.vertices[self.direction]
-        #     print("direction being returned")
-        #     return self.direction
-        # return random.choice([UP, DOWN, LEFT, RIGHT])
-        if self.goal is not None:
-            next_node = self.goal
-            if next_node.previous is not None:
-                while next_node.previous != self.pacman_target:
-                    DebugHelper.drawLine(next_node.node.position, next_node.previous.node.position, DebugHelper.GREEN, )
-                    next_node = next_node.previous
+        
+        # if pacman is on a node, move to a random direction
+        if pacmanPosition == pacmanTarget:
+            return random.choice([UP, DOWN, LEFT, RIGHT])
+
         # you need to return UP, DOWN, LEFT, RIGHT or STOP (where STOP means you don't change direction)
         return STOP
 

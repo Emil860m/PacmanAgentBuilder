@@ -1,4 +1,5 @@
 import os.path
+import subprocess
 
 import pygame
 from pygame.locals import *
@@ -278,4 +279,16 @@ class GameController(object):
 
 
 if __name__ == '__main__':
-    print("Hello, you are executing the wrong file! read the readme for instructions on how to run the bot builder!")
+    print("\n--------------------------------------------------------------------------------------\n"
+          "Hello, you are executing the wrong file, it will still work but please read the README!\n"
+          "The correct file will execute now.\n"
+          "--------------------------------------------------------------------------------------\n")
+    # Get the absolute path to fileA.py
+    # Determine the directory where fileA.py is located
+    dir_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    fileA_path = os.path.join(dir_path, 'runner.py')
+
+    os.chdir(dir_path)
+
+    # Run fileA.py using Python
+    subprocess.run(['python', fileA_path])

@@ -1,5 +1,7 @@
 import math
 
+from Pacman_Complete.constants import TILEWIDTH
+
 
 class Vector2(object):
     def __init__(self, x=0, y=0):
@@ -50,3 +52,6 @@ class Vector2(object):
 
     def __str__(self):
         return "<" + str(self.x) + ", " + str(self.y) + ">"
+
+    def __hash__(self):
+        return self.y * TILEWIDTH * 1000 + self.x
