@@ -38,7 +38,6 @@ class Observation(object):
         return self.pacman.target.position
 
     def getLegalMoves(self) -> list[int]:
-
         """
             :return: Returns the legal moves from pacman's current position
         """
