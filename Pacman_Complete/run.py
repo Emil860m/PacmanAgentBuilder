@@ -24,9 +24,23 @@ class GameController(object):
                  startLevel: int = 0,
                  ghostsEnabled: bool = True,
                  freightEnabled: bool = True,
-                 lockDeltaTime: bool = False
+                 lockDeltaTime: bool = False,
+                 disableVisuals: bool = False
                  ):
-        pygame.init()
+        if disableVisuals:
+            os.environ["SDL_VIDEODRIVER"] = "dummy"
+            # Disable video subsystem completely
+            pygame.display.init()
+
+            # Disable audio subsystem if you don't need audio
+            pygame.mixer.quit()
+            pygame.mixer.init(frequency=0)
+
+            # Disable font subsystem if you don't need fonts
+            pygame.font.quit()
+            pygame.font.init()
+        else:
+            pygame.init()
 
         self.gameSpeed = gameSpeed
         self.gameOver = False

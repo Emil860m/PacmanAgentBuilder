@@ -14,8 +14,8 @@ class HumanAgent(IAgent):
     def __init__(self, gameController):
         super().__init__(gameController)
 
-    def calculateNextMove(self):
-        obs = Observation(self.gameController)
+    def calculateNextMove(self, obs):
+        print(obs.lives)
         self.takeStats()
 
         key_pressed = pygame.key.get_pressed()

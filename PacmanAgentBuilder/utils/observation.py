@@ -18,6 +18,8 @@ class Observation(object):
         self.pelletGroup = gameController.pellets
         self.pacman = gameController.pacman
         self.nodeGroup = gameController.nodes
+        self.lives = gameController.lives
+        self.score = gameController.score
 
     # ------------------ Pacman Functions ------------------
 
@@ -47,7 +49,7 @@ class Observation(object):
         # if pacman is on a node we get the neighbors
         if pacmanPosition.x == pacmanTargetPosition.x and pacmanPosition.y == pacmanTargetPosition.y:
             for i in self.getNodeFromVector(pacmanPosition).neighbors:
-                if self.getNodeFromVector(pacmanPosition).neighbors[i] is not None:
+                if self.getNodeFromVector(pacmanPosition).neighbors[i] is not None and i is not 3:
                     legalMoves.append(i)
         # if pacman is left or right of node
         if pacmanPosition.x != pacmanTargetPosition.x:
@@ -58,6 +60,12 @@ class Observation(object):
             legalMoves.append(UP)
             legalMoves.append(DOWN)
         return legalMoves
+
+    def getLives(self):
+        return self.lives
+
+    def getScore(self):
+        return self.score
 
     # ------------------ Node Functions ------------------
     def getNodeList(self) -> list[Node]:

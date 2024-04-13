@@ -8,7 +8,7 @@ class IAgent(ABC):
     THis is the interface for the agent. All agents must implement this interface.
     """
     @abstractmethod
-    def __init__(self, gameController):
+    def __init__(self, gameController, qtable):
         self.gameController = gameController
         self.actionsTaken = 0
         self.pelletsEatenThisLevel = 0

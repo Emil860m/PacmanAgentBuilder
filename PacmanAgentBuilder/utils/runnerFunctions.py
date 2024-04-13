@@ -1,10 +1,11 @@
 from PacmanAgentBuilder.agents.Iagent import IAgent
+from PacmanAgentBuilder.utils.Q_table_manager import QTableManager
 from PacmanAgentBuilder.utils.gameStats import GameStats
 from Pacman_Complete.run import GameController
 
 
 def runGameWithAgent(agentClass: type[IAgent], gameSpeed=1, startLives=3, startLevel: int = 0,
-                     ghostsEnabled: bool = True, freightEnabled: bool = True, lockDeltaTime: bool = False) -> GameStats:
+                     ghostsEnabled: bool = True, freightEnabled: bool = True, lockDeltaTime: bool = False, q_table = None, disableVisuals=False) -> GameStats:
     """
         Runs a single game with the specified agent.
 
@@ -27,9 +28,10 @@ def runGameWithAgent(agentClass: type[IAgent], gameSpeed=1, startLives=3, startL
         startLevel=startLevel,
         ghostsEnabled=ghostsEnabled,
         freightEnabled=freightEnabled,
-        lockDeltaTime=lockDeltaTime
+        lockDeltaTime=lockDeltaTime,
+        disableVisuals=disableVisuals
     )
-    agent = agentClass(gameController=game)
+    agent = agentClass(gameController=game, qtable=q_table)
 
     game.startGame(agent=agent)
     while True:
@@ -40,7 +42,7 @@ def runGameWithAgent(agentClass: type[IAgent], gameSpeed=1, startLives=3, startL
 
 def calculatePerformanceOverXGames(agentClass: type[IAgent], gameCount: int = 100, gameSpeed=1,
                                    startLevel: int = 0, ghostsEnabled: bool = True, freightEnabled: bool = True,
-                                   lockDeltaTime=True, logging=False):
+                                   lockDeltaTime=True, logging=False, disableVisuals: bool = False):
     """
         Calculates the performance of the specified agent over a number of games.
 
@@ -57,7 +59,7 @@ def calculatePerformanceOverXGames(agentClass: type[IAgent], gameCount: int = 10
 
     if logging:
         print(f"\nAgent: {agentClass.__name__}\n")
-
+    q_table = QTableManager()
     gameStats = []
     for i in range(gameCount):
         if logging:
@@ -65,14 +67,17 @@ def calculatePerformanceOverXGames(agentClass: type[IAgent], gameCount: int = 10
 
         gameStats.append(runGameWithAgent(agentClass, gameSpeed=gameSpeed, startLives=3, startLevel=startLevel,
                                           ghostsEnabled=ghostsEnabled, freightEnabled=freightEnabled,
-                                          lockDeltaTime=lockDeltaTime))
+                                          lockDeltaTime=lockDeltaTime, q_table=q_table, disableVisuals=disableVisuals))
 
         if logging:
             print(f"Game {i + 1} result: {gameStats[i]}")
+        if i % (gameCount/2) == 0:
+            q_table.save_q_table()
+    q_table.save_q_table()
 
     performance = GameStats.calculatePerformance(gameStats)
 
-    if logging:
-        print(f"Performance over {gameCount} games: {performance}")
+    #if logging:
+    print(f"Performance over {gameCount} games: {performance}")
 
     return performance
