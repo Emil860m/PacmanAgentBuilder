@@ -10,7 +10,7 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
 
 if __name__ == "__main__":
-    for i in range(100):
+    for i in range(1000):
         stats = calculatePerformanceOverXGames(
             agentClass=SimpleAgent,  # Specify the agent to be evaluated.
             gameCount=100,  # Number of games the agent will play.
