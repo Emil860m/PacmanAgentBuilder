@@ -10,7 +10,8 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
 
 if __name__ == "__main__":
-    for i in range(1000):
+    for i in range(100):
+        print(str((i + 1) * 100) + " started")
         stats = calculatePerformanceOverXGames(
             agentClass=SimpleAgent,  # Specify the agent to be evaluated.
             gameCount=100,  # Number of games the agent will play.
@@ -22,3 +23,4 @@ if __name__ == "__main__":
             logging=False,  # Toggle the logging of game-related information to the console while the agent is playing.
             disableVisuals=True
         )
+        print(str((i + 1) * 100) + " games done")
