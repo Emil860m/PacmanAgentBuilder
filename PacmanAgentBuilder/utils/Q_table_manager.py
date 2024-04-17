@@ -3,17 +3,26 @@ import pickle
 
 
 class QTableManager:
-    def __init__(self):
-        self.q_table_file = "q_table.pkl"
-        self.q_table = self.load_q_table() if os.path.exists(self.q_table_file) else {}
+    def __init__(self, file_name):
+        self.directory = "q_tables"
+        self.q_table_file = file_name
+        self.q_table = self.load_q_table() if os.path.exists(self.directory) else {}
+        self.newTable = {}
 
     def getQTable(self):
         return self.q_table
 
+    def getNewTable(self):
+        return self.newTable
+
     def load_q_table(self):
-        with open(self.q_table_file, "rb") as f:
-            return pickle.load(f)
+        m = {}
+        for root, dirs, files in os.walk(self.directory):
+            for name in files:
+                with open(self.directory + "/" + name, "rb") as f:
+                    m.update(pickle.load(f))
+        return m
 
     def save_q_table(self):
-        with open(self.q_table_file, "wb") as f:
-            pickle.dump(self.q_table, f)
+        with open(self.directory + "/" + self.q_table_file, "wb") as f:
+            pickle.dump(self.newTable, f)

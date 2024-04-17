@@ -42,7 +42,7 @@ def runGameWithAgent(agentClass: type[IAgent], gameSpeed=1, startLives=3, startL
 
 def calculatePerformanceOverXGames(agentClass: type[IAgent], gameCount: int = 100, gameSpeed=1,
                                    startLevel: int = 0, ghostsEnabled: bool = True, freightEnabled: bool = True,
-                                   lockDeltaTime=True, logging=False, disableVisuals: bool = False):
+                                   lockDeltaTime=True, logging=False, disableVisuals: bool = False, filename = ""):
     """
         Calculates the performance of the specified agent over a number of games.
 
@@ -59,7 +59,7 @@ def calculatePerformanceOverXGames(agentClass: type[IAgent], gameCount: int = 10
 
     if logging:
         print(f"\nAgent: {agentClass.__name__}\n")
-    q_table = QTableManager()
+    q_table = QTableManager(filename)
     gameStats = []
     for i in range(gameCount):
         if logging:
