@@ -1,9 +1,34 @@
+import math
 import random
 
 from PacmanAgentBuilder.agents.Iagent import IAgent
 from PacmanAgentBuilder.utils.debugHelper import DebugHelper
 from PacmanAgentBuilder.utils.observation import Observation
 from Pacman_Complete.vector import Vector2
+
+
+def round_to_nearest_ten(number):
+    return round(number / 10) * 10
+
+
+def distance(vector1, vector2):
+    return math.sqrt((vector1.x - vector2.x) ** 2 + (vector1.y - vector2.y) ** 2)
+
+
+def closest_vector(vector_list, target_vector):
+    if not vector_list:
+        return None
+
+    closest = vector_list[0]
+    min_distance = distance(vector_list[0], target_vector)
+
+    for vector in vector_list[1:]:
+        dist = distance(vector, target_vector)
+        if dist < min_distance:
+            min_distance = dist
+            closest = vector
+
+    return closest
 
 
 class SimpleAgent(IAgent):
@@ -31,15 +56,18 @@ class SimpleAgent(IAgent):
 
     def calculateDoMove(self, obs: Observation):
         b = obs.getPacmanPosition() == obs.getPacmanTargetPosition()
+        b = b or self.num_moves % 30 == 0
         b = b or obs.getLives() < self.currentLives
+        b = b or obs.getPacmanPosition() == Vector2(263, 520)
         b = b and obs.getPacmanPosition() not in self.bad_notes
         return b
 
 
     def calculateNextMove(self, obs: Observation):
+        self.num_moves += 1  # Increment the number of moves
         if self.calculateDoMove(obs):
+            self.num_moves = 0
             self.currentLives = obs.getLives()
-            self.num_moves += 1  # Increment the number of moves
             self.state = self.encode_state(obs)
 
             # Update Q-value for previous state-action pair
@@ -63,10 +91,15 @@ class SimpleAgent(IAgent):
     def encode_state(self, obs: Observation):
         # Encode the current state based on relevant information such as Pac-Man's position, ghost positions, etc.
         # For simplicity, let's use a tuple to represent the state
-        pacman_position = obs.getPacmanPosition()
-        ghost_positions = obs.getGhostPositions()
-        pellet_positions = obs.getPelletPositions()
-        encoded_state = (pacman_position, tuple(ghost_positions), tuple(pellet_positions))
+        pacman_position = Vector2(round_to_nearest_ten(obs.getPacmanPosition().x), round_to_nearest_ten(obs.getPacmanPosition().y))
+        ghost_positions = []
+        for i in obs.getGhostPositions():
+            ghost_positions.append(Vector2(round_to_nearest_ten(i.x), round_to_nearest_ten(i.y)))
+        # pellet_positions = []
+        # pellet_positions = obs.getPelletPositions()
+        closest_pellet = closest_vector(obs.getPelletPositions(), obs.getPacmanPosition())
+        print(closest_pellet)
+        encoded_state = (pacman_position, tuple(ghost_positions), closest_pellet)
         return encoded_state
 
     def calculate_reward(self, obs: Observation):
@@ -77,7 +110,7 @@ class SimpleAgent(IAgent):
             # Large punishment if a life is lost
             reward -= 1000 * self.currentLives - obs.getLives()
             self.currentLives = obs.getLives()
-        reward += self.num_moves
+        reward -= self.num_moves / 10
         return reward
 
     def update_q_table(self, state, action, reward, next_state, obs):
