@@ -98,7 +98,6 @@ class SimpleAgent(IAgent):
         # pellet_positions = []
         # pellet_positions = obs.getPelletPositions()
         closest_pellet = closest_vector(obs.getPelletPositions(), obs.getPacmanPosition())
-        print(closest_pellet)
         encoded_state = (pacman_position, tuple(ghost_positions), closest_pellet)
         return encoded_state
 
