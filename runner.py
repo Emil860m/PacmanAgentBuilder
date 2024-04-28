@@ -23,6 +23,6 @@ if __name__ == "__main__":
             lockDeltaTime=True,  # When enabled, the game will run at the highest possible speed.
             logging=False,  # Toggle the logging of game-related information to the console while the agent is playing.
             disableVisuals=True,
-            filename="q_table" + str(i) + ".pkl"
+            filename="q_table.pkl"
         )
         print(str((i + 1) * g) + " games done")

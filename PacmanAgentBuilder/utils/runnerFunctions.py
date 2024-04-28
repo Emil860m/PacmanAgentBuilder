@@ -1,3 +1,5 @@
+import sys
+
 from PacmanAgentBuilder.agents.Iagent import IAgent
 from PacmanAgentBuilder.utils.Q_table_manager import QTableManager
 from PacmanAgentBuilder.utils.gameStats import GameStats
@@ -71,6 +73,7 @@ def calculatePerformanceOverXGames(agentClass: type[IAgent], gameCount: int = 10
 
         if logging:
             print(f"Game {i + 1} result: {gameStats[i]}")
+        sys.stdout.write(str(i+1))
         # if i % (gameCount/2) == 0:
         #     q_table.save_q_table()
     q_table.save_q_table()
@@ -78,6 +81,7 @@ def calculatePerformanceOverXGames(agentClass: type[IAgent], gameCount: int = 10
     performance = GameStats.calculatePerformance(gameStats)
 
     #if logging:
+    print("")
     print(f"Performance over {gameCount} games: {performance}")
 
     return performance
