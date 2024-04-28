@@ -73,7 +73,7 @@ def calculatePerformanceOverXGames(agentClass: type[IAgent], gameCount: int = 10
 
         if logging:
             print(f"Game {i + 1} result: {gameStats[i]}")
-        sys.stdout.write(str(i+1))
+        print(str(i+1), end="")
         # if i % (gameCount/2) == 0:
         #     q_table.save_q_table()
     q_table.save_q_table()
