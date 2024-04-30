@@ -31,4 +31,9 @@ class GameStats(object):
 
         averageBaseScore = sum(baseScores) / len(baseScores)
 
-        return {"averageScore": round(averageBaseScore, 3)}
+        baseActions = [agent.actionsTaken for agent in gameStats]
+
+        averageBaseActions = sum(baseActions) / len(baseActions)
+
+        return {"averageScore": round(averageBaseScore, 3), "averageActions": round(averageBaseActions, 1)}
+
